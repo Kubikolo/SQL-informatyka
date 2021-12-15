@@ -1,0 +1,214 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| firma              |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0,00 sec)
+
+mysql> use firma;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++-----------------+
+| Tables_in_firma |
++-----------------+
+| pracownicy      |
++-----------------+
+1 row in set (0,00 sec)
+
+mysql> describe pracownicy;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| id_p     | int         | NO   | PRI | NULL    |       |
+| imie     | varchar(20) | YES  |     | NULL    |       |
+| nazwisko | varchar(30) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+3 rows in set (0,00 sec)
+
+mysql> select * from pracownicy;
++------+------+-------------+
+| id_p | imie | nazwisko    |
++------+------+-------------+
+|    1 | Jan  | Kowalski);
+ |
+|    2 | Jan  | Nowak       |
++------+------+-------------+
+2 rows in set (0,01 sec)
+
+mysql> select id_p, nazwisko from pracownicy;
++------+-------------+
+| id_p | nazwisko    |
++------+-------------+
+|    1 | Kowalski);
+ |
+|    2 | Nowak       |
++------+-------------+
+2 rows in set (0,00 sec)
+
+mysql> select * from pracownicy where nazwisko = 'Nowak';
++------+------+----------+
+| id_p | imie | nazwisko |
++------+------+----------+
+|    2 | Jan  | Nowak    |
++------+------+----------+
+1 row in set (0,00 sec)
+
+mysql> create database firma1;
+Query OK, 1 row affected (0,01 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| firma              |
+| firma1             |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+6 rows in set (0,00 sec)
+
+mysql> use firma1;
+Database changed
+mysql> show tables;
+Empty set (0,00 sec)
+
+mysql> create table pracownicy(
+    -> id_p int primary key,
+    -> imie varchar(20),
+    -> nazwisko varchar(30) not null,
+    -> wiek int
+    -> );
+Query OK, 0 rows affected (0,03 sec)
+
+mysql> show tables;
++------------------+
+| Tables_in_firma1 |
++------------------+
+| pracownicy       |
++------------------+
+1 row in set (0,00 sec)
+
+mysql> insert into pracownicy values(
+    -> 1, 'Jan', 'Kowalski', 30);
+Query OK, 1 row affected (0,01 sec)
+
+mysql> insert into pracownicy values( 2, 'Jan', 'Nowak', 40);
+Query OK, 1 row affected (0,01 sec)
+
+mysql> insert into pracownicy values( 3, 'Tomasz', 'Nowak', 45);
+Query OK, 1 row affected (0,00 sec)
+
+mysql> insert into pracownicy values( 3, 'Tomasz', 'Kowalski', 50);
+ERROR 1062 (23000): Duplicate entry '3' for key 'pracownicy.PRIMARY'
+mysql> insert into pracownicy values( 4, 'Tomasz', 'Kowalski', 50);
+Query OK, 1 row affected (0,01 sec)
+
+mysql> insert into pracownicy values( 5, 'Maria', 'Konopnicka', 20);
+Query OK, 1 row affected (0,01 sec)
+
+mysql> select * from pracownicy;
++------+--------+------------+------+
+| id_p | imie   | nazwisko   | wiek |
++------+--------+------------+------+
+|    1 | Jan    | Kowalski   |   30 |
+|    2 | Jan    | Nowak      |   40 |
+|    3 | Tomasz | Nowak      |   45 |
+|    4 | Tomasz | Kowalski   |   50 |
+|    5 | Maria  | Konopnicka |   20 |
++------+--------+------------+------+
+5 rows in set (0,00 sec)
+
+mysql> select * from pracownicy where wiek > 45;
++------+--------+----------+------+
+| id_p | imie   | nazwisko | wiek |
++------+--------+----------+------+
+|    4 | Tomasz | Kowalski |   50 |
++------+--------+----------+------+
+1 row in set (0,00 sec)
+
+mysql> select * from pracownicy where nazwisko = 'Nowak' and wiek > 40;
++------+--------+----------+------+
+| id_p | imie   | nazwisko | wiek |
++------+--------+----------+------+
+|    3 | Tomasz | Nowak    |   45 |
++------+--------+----------+------+
+1 row in set (0,00 sec)
+
+mysql> select * from pracownicy;
++------+--------+------------+------+
+| id_p | imie   | nazwisko   | wiek |
++------+--------+------------+------+
+|    1 | Jan    | Kowalski   |   30 |
+|    2 | Jan    | Nowak      |   40 |
+|    3 | Tomasz | Nowak      |   45 |
+|    4 | Tomasz | Kowalski   |   50 |
+|    5 | Maria  | Konopnicka |   20 |
++------+--------+------------+------+
+5 rows in set (0,00 sec)
+mysql> delete from pracownicy where nazwisko ='Nowak';
+Query OK, 2 rows affected (0,01 sec)
+
+mysql> select * from pracownicy;
++------+--------+------------+------+
+| id_p | imie   | nazwisko   | wiek |
++------+--------+------------+------+
+|    1 | Jan    | Kowalski   |   30 |
+|    4 | Tomasz | Kowalski   |   50 |
+|    5 | Maria  | Konopnicka |   20 |
++------+--------+------------+------+
+3 rows in set (0,00 sec)
+
+mysql> show tables;
++------------------+
+| Tables_in_firma1 |
++------------------+
+| pracownicy       |
++------------------+
+1 row in set (0,00 sec)
+
+mysql> drop table pracownicy;
+Query OK, 0 rows affected (0,02 sec)
+
+mysql> show tables;
+Empty set (0,00 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| firma              |
+| firma1             |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+6 rows in set (0,00 sec)
+
+mysql> drop database firma1;
+Query OK, 0 rows affected (0,02 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| firma              |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0,00 sec)
+
+
+
